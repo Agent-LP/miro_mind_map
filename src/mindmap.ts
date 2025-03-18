@@ -12,12 +12,13 @@ type GraphNode = {
   const visited: Record<string, GraphNode> = {};
  */
 const createGraph = (contents: DSVRowArray<string>) => {
-  let root: GraphNode | undefined;
+  const root: GraphNode = { nodeView: { content: "parent_node" }, children: [] };
 
   const visited: Record<string, GraphNode> = {};
 
   for (const row of contents) {
-    let parent = undefined;
+    let parent: GraphNode = root; // Ahora el padre inicial es un nodo raíz fijo
+
     for (const col of contents.columns) {
       const value = row[col]!;
 
@@ -29,8 +30,6 @@ const createGraph = (contents: DSVRowArray<string>) => {
 
         if (parent) {
           parent.children.push(visited[key]);
-        } else {
-          root = node;
         }
       }
 
